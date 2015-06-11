@@ -7,9 +7,8 @@
 # Alternative: truemean~N(0,altsd^2)
 # betahat ~ N(truemean, sebetahat^2)
 # Y: data matrix such that samplemean=betahat, sd(samplemean)=sebetahat
-datamaker = function(seed,args){
+datamaker = function(args){
   library(MASS)
-  set.seed(seed)
   
   N = args$N
   Nnull = args$Nnull

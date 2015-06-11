@@ -1,10 +1,23 @@
+# Methods: orginial t-test, limma, limma-robust, vash, vash with single component prior
 sourceDir("methods")
-methods=list() 
 
-# Compare methods: 
-methods[[1]] = list(name="baseline",fn=originalt.wrapper,args=NULL)
-methods[[2]] = list(name="limma",fn=limma.wrapper,args=list(robust=FALSE))
-methods[[3]] = list(name="limmaR",fn=limma.wrapper,args=list(robust=TRUE))
-methods[[4]] = list(name="vash",fn=vash.wrapper,args=list(singlecomp=FALSE))
-methods[[5]] = list(name="vashS",fn=vash.wrapper,args=list(singlecomp=TRUE))
+# Original t-test
+addMethod(dsc_vash,name="baseline",fn=originalt.wrapper,outputtype="est_output",args=NULL)
 
+# limma (Smyth, 2005)
+addMethod(dsc_vash,name="limma",fn=limma.wrapper,outputtype="est_output",args=list(robust=FALSE))
+
+# limma-robust (Philpson et al, 2014)
+addMethod(dsc_vash,name="limmaR",fn=limma.wrapper,outputtype="est_output",args=list(robust=TRUE))
+
+# vash
+addMethod(dsc_vash,"vash",vash.wrapper,outputtype="vash_output",args=list(singlecomp=FALSE))
+
+# vash with single component prior
+addMethod(dsc_vash,"vashS",vash.wrapper,outputtype="vash_output",args=list(singlecomp=TRUE))
+
+# jointash with single component prior
+addMethod(dsc_vash,"jointashS",jointash.wrapper,outputtype="jointash_output",args=list(singlecomp=TRUE))
+
+# jointash with single component prior
+addMethod(dsc_vash,"ash",ash.wrapper,outputtype="ash_output")
