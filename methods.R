@@ -11,10 +11,10 @@ addMethod(dsc_vash,name="limma",fn=limma.wrapper,outputtype="limma_output",args=
 addMethod(dsc_vash,name="limmaR",fn=limma.wrapper,outputtype="limma_output",args=list(robust=TRUE))
 
 # vash
-addMethod(dsc_vash,"vash.var",vash.wrapper,outputtype="vash_output",
-          args=list(singlecomp=FALSE, unimodal="variance"))
-addMethod(dsc_vash,"vash.prec",vash.wrapper,outputtype="vash_output",
-          args=list(singlecomp=FALSE, unimodal="precision"))
+# addMethod(dsc_vash,"vash.var",vash.wrapper,outputtype="vash_output",
+#           args=list(singlecomp=FALSE, unimodal="variance"))
+# addMethod(dsc_vash,"vash.prec",vash.wrapper,outputtype="vash_output",
+#           args=list(singlecomp=FALSE, unimodal="precision"))
 
 # vash with single component prior
 addMethod(dsc_vash,"vashS",vash.wrapper,outputtype="vash_output",
