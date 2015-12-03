@@ -1,0 +1,7 @@
+dsc-vash-files/
+*.pdf
+.Rapp*
+*.Rhistory
+*.Rdata
+*~
+plots/
