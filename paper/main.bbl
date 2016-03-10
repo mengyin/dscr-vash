@@ -1,0 +1,137 @@
+\begin{thebibliography}{}
+
+\bibitem[Baldi and Long(2001)Baldi and Long]{baldi2001}
+Baldi, P. and Long, A.~D. (2001).
+\newblock A bayesian framework for the analysis of microarray expression data:
+  regularized t-test and statistical inferences of gene changes.
+\newblock {\em Bioinformatics\/}, {\bf 17}(6), 509--519.
+
+\bibitem[Benjamini and Hochberg(1995)Benjamini and Hochberg]{benjamini1995}
+Benjamini, Y. and Hochberg, Y. (1995).
+\newblock Controlling the false discovery rate: a practical and powerful
+  approach to multiple testing.
+\newblock {\em Journal of the Royal Statistical Society. Series B
+  (Methodological)\/}, pages 289--300.
+
+\bibitem[Broberg {\em et~al.}(2003)Broberg {\em et~al.}]{broberg2003}
+Broberg, P. {\em et~al.} (2003).
+\newblock Statistical methods for ranking differentially expressed genes.
+\newblock {\em Genome Biol\/}, {\bf 4}(6), R41.
+
+\bibitem[Cui {\em et~al.}(2005)Cui, Hwang, Qiu, Blades, and Churchill]{cui2005}
+Cui, X., Hwang, J.~G., Qiu, J., Blades, N.~J., and Churchill, G.~A. (2005).
+\newblock Improved statistical tests for differential gene expression by
+  shrinking variance components estimates.
+\newblock {\em Biostatistics\/}, {\bf 6}(1), 59--75.
+
+\bibitem[Delmar {\em et~al.}(2005)Delmar, Robin, and Daudin]{delmar2005}
+Delmar, P., Robin, S., and Daudin, J.~J. (2005).
+\newblock Varmixt: efficient variance modelling for the differential analysis
+  of replicated gene expression data.
+\newblock {\em Bioinformatics\/}, {\bf 21}(4), 502--508.
+
+\bibitem[Dempster {\em et~al.}(1977)Dempster, Laird, and Rubin]{dempster1977em}
+Dempster, A.~P., Laird, N.~M., and Rubin, D.~B. (1977).
+\newblock Maximum likelihood from incomplete data via the em algorithm.
+\newblock {\em Journal of the royal statistical society. Series B
+  (methodological)\/}, pages 1--38.
+
+\bibitem[Efron {\em et~al.}(2001)Efron, Tibshirani, Storey, and
+  Tusher]{efron2001eb}
+Efron, B., Tibshirani, R., Storey, J.~D., and Tusher, V. (2001).
+\newblock Empirical bayes analysis of a microarray experiment.
+\newblock {\em Journal of the American statistical association\/}, {\bf
+  96}(456), 1151--1160.
+
+\bibitem[Kendziorski {\em et~al.}(2003)Kendziorski, Newton, Lan, and
+  Gould]{kendziorski2003}
+Kendziorski, C., Newton, M., Lan, H., and Gould, M. (2003).
+\newblock On parametric empirical bayes methods for comparing multiple groups
+  using replicated gene expression profiles.
+\newblock {\em Statistics in medicine\/}, {\bf 22}(24), 3899--3914.
+
+\bibitem[L{\"o}nnstedt and Speed(2002)L{\"o}nnstedt and Speed]{lonnstedt2002}
+L{\"o}nnstedt, I. and Speed, T. (2002).
+\newblock Replicated microarray data.
+\newblock {\em Statistica sinica\/}, pages 31--46.
+
+\bibitem[Lonsdale {\em et~al.}(2013)Lonsdale, Thomas, Salvatore, Phillips, Lo,
+  Shad, Hasz, Walters, Garcia, Young, {\em et~al.}]{gtex}
+Lonsdale, J., Thomas, J., Salvatore, M., Phillips, R., Lo, E., Shad, S., Hasz,
+  R., Walters, G., Garcia, F., Young, N., {\em et~al.} (2013).
+\newblock The genotype-tissue expression (gtex) project.
+\newblock {\em Nature genetics\/}, {\bf 45}(6), 580--585.
+
+\bibitem[Mary-Huard {\em et~al.}(2004)Mary-Huard, Daudin, Robin, Bitton,
+  Cabannes, and Hilson]{mary2004}
+Mary-Huard, T., Daudin, J.-J., Robin, S., Bitton, F., Cabannes, E., and Hilson,
+  P. (2004).
+\newblock Spotting effect in microarray experiments.
+\newblock {\em BMC bioinformatics\/}, {\bf 5}(1), 63.
+
+\bibitem[Murie {\em et~al.}(2009)Murie, Woody, Lee, and Nadon]{murie2009}
+Murie, C., Woody, O., Lee, A.~Y., and Nadon, R. (2009).
+\newblock Comparison of small n statistical tests of differential expression
+  applied to microarrays.
+\newblock {\em BMC bioinformatics\/}, {\bf 10}(1), 1.
+
+\bibitem[Newton and Kendziorski(2003)Newton and Kendziorski]{newton2003}
+Newton, M.~A. and Kendziorski, C. (2003).
+\newblock Parametric empirical bayes methods for microarrays.
+\newblock In {\em The Analysis of Gene Expression Data\/}, pages 254--271.
+  Springer.
+
+\bibitem[Phipson {\em et~al.}(2013)Phipson, Lee, Majewski, Alexander, and
+  Smyth]{phipson2013}
+Phipson, B., Lee, S., Majewski, I.~J., Alexander, W.~S., and Smyth, G.~K.
+  (2013).
+\newblock Empirical bayes in the presence of exceptional cases, with
+  application to microarray data.
+\newblock Technical report, Technical report, Bioinformatics Division, Walter
+  and Eliza Hall Institute of Medical Research, Melbourne, Australia.
+
+\bibitem[Smyth(2004)Smyth]{smyth2004limma}
+Smyth, G.~K. (2004).
+\newblock Linear models and empirical bayes methods for assessing differential
+  expression in microarray experiments.
+\newblock {\em Statistical Applications in Genetics and Molecular Biology\/},
+  {\bf 3}(1), 3.
+
+\bibitem[Stephens(2016)Stephens]{stephens2016ash}
+Stephens, M. (2016).
+\newblock False discovery rates: A new deal.
+\newblock {\em bioRxiv\/}, page 038216.
+
+\bibitem[Storey(2002)Storey]{storey2002fdr}
+Storey, J.~D. (2002).
+\newblock A direct approach to false discovery rates.
+\newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)\/}, {\bf 64}(3), 479--498.
+
+\bibitem[Storey(2003)Storey]{storey2003pfdr}
+Storey, J.~D. (2003).
+\newblock The positive false discovery rate: a bayesian interpretation and the
+  q-value.
+\newblock {\em Annals of statistics\/}, pages 2013--2035.
+
+\bibitem[Tusher {\em et~al.}(2001)Tusher, Tibshirani, and Chu]{tusher2001}
+Tusher, V.~G., Tibshirani, R., and Chu, G. (2001).
+\newblock Significance analysis of microarrays applied to the ionizing
+  radiation response.
+\newblock {\em Proceedings of the National Academy of Sciences\/}, {\bf 98}(9),
+  5116--5121.
+
+\bibitem[Varadhan(2010)Varadhan]{varadhan2010squarem}
+Varadhan, R. (2010).
+\newblock Squarem: Squared extrapolation methods for accelerating fixed-point
+  iterations.
+\newblock {\em URL http://CRAN. R-project. org/package= SQUAREM, R package
+  version\/}, {\bf 1}, 12.
+
+\bibitem[Wright and Simon(2003)Wright and Simon]{wright2003}
+Wright, G.~W. and Simon, R.~M. (2003).
+\newblock A random variance model for detection of differential gene expression
+  in small microarray experiments.
+\newblock {\em Bioinformatics\/}, {\bf 19}(18), 2448--2455.
+
+\end{thebibliography}

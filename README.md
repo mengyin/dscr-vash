@@ -1,13 +1,13 @@
-<<<<<<< HEAD
-# dscr-template
-a repository for using dynamic statistical comparison to reproce simulation examples in Zou & Hastie (2005)
+## Introduction
+This repo is intended to contain code to reproduce results from the paper "Variance Adaptive Shrinkage (vash): Flexible Empirical Bayes estimation of variances".
 
-## How to use this to run the elastic net DSC example
+## Directory Structure
+Here's a brief summary of the directory structure.
 
-1. Load the package "dscr" in R. [Make sure you have installed the `dscr` package first from https://github.com/stephens999/dscr]
-2. Set R's working dicrectory to this repo.
-3. Run the elastic net DSC example by running `source("run_dsc.R")` in R. It runs 4 methods (elastic net, naive elastic net, lasso, ridge regression) on the 4 simulation scenarios in Zou & Hastie (2005).
-4. Show the median Mean Squared Errors $mean((X_{test}\beta - X_{test}\hat{\beta})^2)$ of the 4 methods for the 4 simulation scenarios by running `aggregate(MSE~method+scenario,res,median)`.
-=======
-# dscr-vash
->>>>>>> 27dabb9eb3ed766eb79e0acd7fe7d6c1afcbb051
+code: contains 2 DSC (dynamic statistical comparison) directories, which generated results in the Results section. The DSC "dsc-vash" compares the RRMSEs of limma, limmaR and vash on several simulation scenarios with different degrees of freedom (3,10,50). The DSC "dsc-gtex-vash" performs differential expression analysis between every pair of tissue for GTEx RNA-seq data, and compares the log-likelihoods of single IG variance prior model (limma) and mixture IG variance prior model (vash).
+
+plots: contains the R code to plot the figures in the paper.
+
+paper: the paper
+
+

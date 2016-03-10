@@ -1,7 +1,8 @@
-dsc-vash-files/
+code/dsc-vash/dsc-vash-files/
+code/dsc-gtex-vash/dsc-gtex-files/
 *.pdf
 .Rapp*
 *.Rhistory
 *.Rdata
 *~
-plots/
+*.html

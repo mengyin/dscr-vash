@@ -1,0 +1,418 @@
+\def\CC{\mathbb{C}}
+\def\RR{\mathbb{R}}
+\def\ZZ{\mathbb{Z}}
+\def\PP{\mathbb{P}}
+\def\EE{\mathbb{E}}
+\def\II{\mathbb{I}}
+
+\def\E{\textrm{E}}
+\def\Cov{\textrm{Cov}}
+\def\Var{\textrm{Var}}
+\def\SE{\textrm{SE}}
+\def\Corr{\textrm{Corr}}
+\def\Corr{\textrm{Corr}}
+\def\Gam{\textrm{Gamma}}
+\def\IG{\textrm{InvGamma}}
+\def\RRMSE{\textrm{RRMSE}}
+\def\logN{\textrm{logN}}
+\def\Bin{\textrm{Binomial}}
+\def\Multinom{\textrm{Multinomial}}
+\def\Categ{\textrm{Categorical}}
+\def\lfsr{\textrm{lfsr}}
+\def\mb{\mathbf}
+\def\bs{\boldsymbol}
+\def\bhat{\hat{\beta}}
+
+\def\av{\mathbf a}
+\def\piv{\mathbf \pi}
+\def\sv{\mathbf s}
+
+\newcommand{\Ga}{\alpha}
+\newcommand{\Gb}{\beta}
+\newcommand{\Gg}{\gamma}     \newcommand{\GG}{\Gamma}
+\newcommand{\Gd}{\delta}     \newcommand{\GD}{\Delta}
+\newcommand{\Ge}{\epsilon}
+\newcommand{\Gf}{\phi}       \newcommand{\GF}{\Phi}
+\newcommand{\Gh}{\theta}
+\newcommand{\Gi}{\iota}
+\newcommand{\Gk}{\kappa}
+\newcommand{\Gl}{\lambda}    \newcommand{\GL}{\Lambda}
+\newcommand{\Go}{\omega}     \newcommand{\GO}{\Omega}
+\newcommand{\Gs}{\sigma}     \newcommand{\GS}{\Sigma}
+\newcommand{\Gt}{\tau}
+\newcommand{\Gz}{\zeta}
+\newcommand{\s}{\sigma}
+\newcommand{\tr}{\triangle}
+
+
+\documentclass{bioinfo}
+\copyrightyear{2015} \pubyear{2015}
+
+\access{Advance Access Publication Date: Day Month Year}
+\appnotes{Original Paper}
+
+\begin{document}
+\firstpage{1}
+
+\subtitle{Gene expression}
+
+\title[short Title]{Variance Adaptive Shrinkage (vash): Flexible Empirical Bayes estimation of variances}
+\author[Sample \textit{et~al}.]{Mengyin Lu\,$^{\text{\sfb 1}}$ and Matthew Stephens\,$^{\text{\sfb 1,2,}*}$}
+\address{$^{\text{\sf 1}}$Department of Statistics, University of Chicago, Chicago, 60637, USA and 
+$^{\text{\sf 2}}$Department of Human Genetics, University of Chicago, Chicago, 60637,
+USA.}
+
+\corresp{$^\ast$To whom correspondence should be addressed.}
+
+\history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
+
+\editor{Associate Editor: XXXXXXX}
+
+\abstract{\textbf{Motivation:} We consider the problem of estimating variances on a large number of ``similar'' 
+units, when there are relatively few observations on each unit.  
+This problem is important in genomics, for example,
+where it is often desired to estimate variances for thousands of genes (or some other genomic unit) from just a few measurements on each. 
+A common approach to this problem is to use an Empirical Bayes (EB) method that assumes
+the variances among genes follow an inverse-gamma distribution. Here we 
+describe a more flexible EB method, whose main assumption is that the distribution of the variances
+(or, as an alternative, the precisions) is unimodal. \\
+\textbf{Results:} We show that this more flexible
+assumption provides competitive performance with existing methods when the variances
+truly come from an inverse-gamma distribution, and can outperform them when 
+the distribution of the variances is more complex. In analyses of several 
+human gene expression datasets from the Genotype Tissues Expression (GTEx) consortium, we find that our more flexible model often fits the data appreciably better than the single inverse gamma distribution. At the same time we find that, for variance estimation, the differences between methods is often small, suggesting that the simpler methods will often suffice in practice. \\
+\textbf{Availability:} Our methods are implemented in an R package {\tt vashr} available from 
+\href{http://github.com/mengyin/vashr}{http://github.com/mengyin/vashr}. \\
+\textbf{Contact:} \href{mengyin@galton.uchicago.edu}{mengyin@galton.uchicago.edu} or \href{mstephens@uchicago.edu}{mstephens@uchicago.edu}\\
+%\textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics}online.
+}
+
+\maketitle
+
+\section{Introduction}
+
+%Text Text Text Text Text Text  Text Text Text Text Text Text Text
+%Text Text  Text Text Text Text Text Text. Figure~\ref{fig:01}
+%shows that the above method  Text Text Text Text  Text Text Text
+%Text Text Text  Text Text.  \citep{Bag01} wants to know about
+%{\ldots}{\ldots} text follows.
+%\begin{equation}
+%\sum \text{\it x}+ \text{\it y} =\text{\it Z}\label{eq:01}\vspace*{-10pt}
+%\end{equation}
+
+In statistics, shrinkage procedures are important ways to help improve estimation accuracy. They are often used to shrink target parameters towards some prior belief, and typically reduce the variance of the resulting estimators by borrowing information from prior knowledge or other observations. In this paper, we propose a flexible Bayesian shrinkage estimator for variances, which is able to reduce variance estimation error rates in some particular genomic settings. 
+
+Shrinkage estimators have been widely used in genomics, particularly, for example, to increase power to identify differentially expressed genes in two or more conditions. A typical pipeline for identifying differentially expressed genes computes a $p$-value for each gene using a $t$-test (two condition experiments) or $F$-test (multiple condition experiments), both of which require an estimate of the variance in expression of each gene among samples. In the classical $t$-test or $F$-test, sample variances are used as plug-in estimates of gene-specific variances. However, when the sample size is small, sample variances can be inaccurate, resulting in loss of power \citep{murie2009}.  Hence, many methods have been proposed to improve variance estimation. For example, several papers \citep{tusher2001,efron2001eb,broberg2003} suggested adding an offset standard deviation to stabilize small variance estimates. A more sophisticated approach \citep{baldi2001} uses a parametric hierarchical model to combine information across genes, using an inverse gamma prior for the variances, and a Gamma likelihood to model the observed sample variances. This idea was further developed by \citet{smyth2004limma} into an Empirical Bayes approach that estimates the parameters of the prior distribution from the data. This improves performance by making the method more adaptive to the data. \citet{smyth2004limma} also introduces 
+the ``moderated $t$-test",  which modifies the classical $t$-test by replacing the gene-specific sample variances with estimates based on their posterior distribution.
+This pipeline, implemented in the software {\tt limma}, is widely used in genomics thanks to its adaptivity, computational efficiency and ease of use.
+  
+While assuming an inverse-gamma distribution for the variances yields simple procedures, the actual distribution of variances may be more complex.
+Motivated by this, \citet{phipson2013} (limma with robust option, denoted by `limmaR') modified the procedures from \citet{smyth2004limma},
+in a somewhat {\it ad hoc} way, to allow that
+some small proportion of outlier genes may have higher variability than expected under the inverse-gamma assumption. They showed that, in the presence
+of such outliers, this procedure could improve on the standard limma pipeline.
+
+Here we consider a more general and adaptive approach to this problem. Our method is based on the assumption that the distribution of the variances (or,
+alternatively, the precisions) is unimodal. We use a mixture of (possibly a large number of) inverse-gamma distributions to flexibly model this unimodal distribution,
+and provide simple computational procedures to fit this Empirical Bayes model by maximum likelihood of the mixture proportions.
+Our procedure provides a posterior distribution on each variance or precision, as well as point estimates (posterior mean). The methods
+are an analogue of the ``adaptive shrinkage" methods for mean parameters introduced in \citet{stephens2016ash}, and are implemented in
+the R package vashr (for ``variance adaptive shrinkage in R"). We compare our method with both limma and limmaR in various simulation studies, and also 
+assess its utility on real gene expression data.
+
+
+\begin{methods}
+\section{Methods}
+\subsection{Models}
+Suppose that we observe variance estimates $\hat{s}_1^2,...,\hat{s}_G^2$ that are estimates of underlying ``true'' variances $s_1^2,...,s_G^2$.  Motivated by
+standard normal theory, we assume 
+that 
+\begin{equation}
+\hat{s}_g^2|s_g^2 \sim s_g^2 \chi^2_{d_g}/d_g, \quad i.e. \quad \hat{s}_g^2|s_g^2\sim \Gam(d_g/2,d_g/(2s_g^2)). \label{eqn:selik}
+\end{equation}
+where the degrees of freedom $d_g$ depends on the sample size and we assume it to be known. 
+
+Empirical Bayes (EB) approaches to estimating $s^2_g$ (eg \citep{smyth2004limma}) are commonly used to improve accuracy, particularly when the degrees of freedom $d_g$ for each observation are modest. The EB approach typically assumes that the variances $s^2_g$ are independent and identically distributed from some underlying parametric distribution $g$: 
+\begin{equation}
+s^2_g \sim g(\cdot; \theta)
+\end{equation}
+where the parameters $\theta$ are to be estimated from the data. Equivalently, that the precisions (inverse variances), $s^{-2}_g$, are i.i.d. from some $h(\cdot; \theta)$. A standard approach (Smyth) assumes that $g$ is an inverse-gamma distribution (i.e. $h$ is a gamma distribution) which simplifies inference because of conjugacy. Here we introduce more flexible assumptions for $g$ or $h$: specifically that either $g$ or $h$ is {\it unimodal}.  By using a mixture of inverse gamma distributions for $g$ (i.e. a mixture of gamma distributions for $h$), we can flexibly capture a wide variety of unimodal distributions for $g$ or $h$, while preserving many of the computational benefits of conjugacy.
+
+
+\subsection{A unimodal distribution for the variances}
+Let $\IG(\cdot;a,b)$ denote the density of an Inverse-Gamma distribution with shape $a$ and rate $b$. This distribution is unimodal with mode
+at $c=b/(a+1)$. To obtain a more flexible family of unimodal distributions with mode at $c$ we consider a mixture of
+Inverse-Gamma distributions, each with mode at $c$:
+\begin{equation}
+g(\cdot ; \piv,\av,  c) = \sum\limits_{k=1}^K \pi_{k} \IG(\cdot;a_k,b_k), \label{eqn:h}
+\end{equation}
+where
+\begin{equation}
+b_k:=(a_k+1)*c. \label{eqn:b1}
+\end{equation}
+Each component in (\ref{eqn:h}) has mode at $c$, and the variance about this mode is controlled by $a_k$, with large $a_k$
+corresponding to small variance. By setting $\av$ to a fixed grid of values that range from ``small" to ``large", we obtain a flexible
+family of distributions, with hyperparameters $\piv$, that are unimodal about $c$. See below for details on choice of grid for $\av$.
+This approach is analogous to \citet{stephens2016ash}, which uses mixtures of normal or uniform distributions, with a fixed grid of variances,
+to model unimodal distributions for mean parameters.
+
+\subsection{Estimating hyper-parameters}
+
+For $K=1$ we estimate the hyperparameters $(a,c)$ by maximising the likelihood
+\begin{align}
+L(a,c ; \hat{s}_1^2,..., \hat{s}_G^2) &:= P(\hat{s}_1,...,\hat{s}_G| a, c) \\
+& = \prod\limits_{g=1}^G p(\hat{s}_g; a, c) \\
+\end{align}
+where
+\begin{align}
+p(\hat{s}_g; a,c) =&\int P(\hat{s}_g^2|s_g^2) g(s_g^2|a, c)ds_g^2 \\
+=&(d_g/2)^{d_g/2}\frac{\hat{s}_g^{d_g-1/2}\GG(a+d_g/2)b^{a}}{\GG(d_g/2)\GG(a)(d_g\hat{s}_g^2/2+b)^{a+d_g/2}}, \label{eqn:ps} \\
+ &[b=(a+1)/c].
+\end{align}
+We use the R command {\tt optim} to numerically maximize this likelihood.
+The approach is similar to \citet{smyth2004limma}, except that
+we use maximum likelihood instead of moment matching.
+
+For $K>1$, as noted above, we use $K$ ``large" (e.g. 10-16), fix the values of $a_k$ to a grid of values from ``small" to ``large", and estimate the hyper-parameters $c,\piv$ by maximizing the likelihood
+\begin{align}
+L(\av, c; \hat{s}_1^2,..., \hat{s}_G^2) &=P(\hat{s}_1,...,\hat{s}_G| \av, c) \\ 
+&=\prod\limits_{g=1}^G \sum_k \pi_k p(\hat{s}_g; a_k,c) \label{eqn:lik}
+\end{align}
+where $p(\hat{s}_g; a_k,c)$ is given by (\ref{eqn:ps}).
+ We center the grid of $a_k$ values on the point estimate $\hat{a}$ obtained for $K=1$, to ensure that the grid values span a range consistent with the data. Moreover, if the data are consistent with $K=1$ then the estimated $\piv$ will be concentrated on the component with $a_k=\hat{a}$, and thus lead to similar results to limma.
+ 
+To maximize the likelihood we use an iterative procedure that alternates between updating $c$ and $\pi$, with each step increasing the likelihood. 
+Given $c$, we update $\pi$ using a simple EM step \citep{dempster1977em}. Given $\pi$ we update $c$ by optimizing (\ref{eqn:lik}) numerically using {\tt optim}. We use SQUAREM \citep{varadhan2010squarem} to accelerate
+convergence of the overall procedure. See Appendix for details.
+
+\subsection{Posterior calculations}
+Using (\ref{eqn:h}) as a prior distribution for $s_g^2$, and combining with the likelihood (\ref{eqn:selik}) the posterior distribution of $s_g^2$ is also a mixture of inverse Gamma distributions:
+\begin{align}
+P(s_g^2|\hat{s}_g^2) %&= \frac{P(\hat{s}_g^2|s_g^2)P(s_g^2|c,\av,\piv)}{\int P(\hat{s}_g^2|s_g^2)P(s_g^2|c,\av,\piv)ds_g}\\
+& =\sum_k \tilde{\pi}_{gk} \IG(s_g^2; \tilde{a}_{gk}, \tilde{b}_{gk}),
+\end{align}
+where
+\begin{align}
+\tilde{a}_{gk}&:=a_k+d_g/2 , \label{post}  \\
+\tilde{b}_{gk}&:=b_k+d_g \hat{s}_g^2/2, \\
+\tilde{\pi}_{gk}& := \frac{\pi_k \hat{s}_g^{d_g-2}\frac{\Gamma(a_k+d_g/2)}{\Gamma(a_k)}\frac{b_k^{a_k}}{(b_k+d_g\hat{s}_g^2/2)^{a_k+d_g/2}}}
+{\sum_{k'} \pi_{k'} \hat{s}_g^{d_g-2}\frac{\Gamma(a_{k'}+d_g/2)}{\Gamma(a_{k'})}\frac{b_{k'}^{a_{k'}}}{(b_{k'}+d_g\hat{s}_g^2/2)^{a_{k'}+d_g/2}}}.   \label{eqn:postpi}
+\end{align}
+
+Following \citet{smyth2004limma} we use the posterior mean of $s_g^{-2}$ as a point estimate for the precision $s_g^{-2}$:
+\begin{equation} \label{eqn:precision-est}
+\tilde{s}_g^{-2}=\EE(s_g^{-2}|\hat{s}_g^2)=\sum_k \tilde{\pi}_{gk}\frac{\tilde{a}_{gk}}{\tilde{b}_{gk}}.
+\end{equation}
+Note that each ${\tilde{a}_{gk}}/{\tilde{b}_{gk}}$ can be interpreted as a shrinkage-based estimate of $s_g^{-2}$,
+since it lies between the observation $\hat{s}_g^{-2}$ and the prior mean of the $k$th mixture component $a_k/b_k$.
+
+When estimating variances we use the inverse of the estimated precision (\ref{eqn:precision-est}).
+While it may seem more natural to use the posterior mean of $s_g^2$ as a point estimate for $s_g^2$, we found that this can be very sensitive
+to small changes in the estimated hyper-parameters $\av$, and so can perform poorly.
+And while it may also be more natural to estimate variances on a log scale, for example using the posterior mean for $\log(s_g)$,
+the absence of closed-form expressions makes this less convenient.
+
+\subsection{Unimodal prior assumption on variance or precision}
+
+The above formulation is based on assuming a unimodal prior distribution for the variance $s_g^2$,
+and specifically by using a mixture of inverse gamma distributions all with the same mode.
+An alternative is to assume a unimodal prior distribution for the precision $1/s_g^2$,
+by using a mixture of Gamma distributions, all with the same mode. 
+This is equivalent to using a mixture
+of inverse gamma distributions for the variance $s_g^2$ as in (\ref{eqn:h}) above, but with
+\begin{equation}
+b_k:= (a_k-1)/c \label{eqn:b2}
+\end{equation}
+in place of (\ref{eqn:b1}), because the mode of a $\Gam(a,b)$ distribution is at $c=(a-1)/b$.
+We present results for both approaches. In practice one can assess which of the two models provides
+a better fit to the data by comparing their (maximized) likelihoods (\ref{eqn:lik}).
+ Note that in many (but not all) cases the fitted prior distributions under either or both approaches 
+will end up being unimodal for both the variance {\it and} the precision. However, even in these cases,
+the optimal likelihood under each approach will typically differ because the family of unimodal distributions 
+being optimized over is different. 
+
+\enlargethispage{6pt}
+
+\end{methods}
+
+\section{Results}
+\subsection{Simulation studies}
+
+To compare and contrast our method with limma and limmaR we simulate data from the model (\ref{eqn:selik})-(\ref{eqn:h}), with $G=10,000$, and degrees of freedom $df=3,10,50$ (corresponding to sample sizes 4, 11 and 51 respectively)
+under various scenarios for the actual distribution of variances (scenarios A-D) or precisions (scenarios E-H), as summarized in Tables \ref{tab:simparams1} and \ref{tab:simparams2}. 
+%We assume that 90\% of the genes are not differential expressed ($\beta_g=0$), while the rest of the genes are ($\beta_g\sim N(0,\sigma^2)$). Here $\sigma$ is held fixed at 2. 
+The simulation scenarios are designed to span the range from a single inverse-gamma prior as assumed by limma, to more complex distributions under
+which we might expect our method to outperform limma. Specifically we consider:
+\begin{itemize}
+\item Single IG (Gamma): single component inverse-Gamma prior on variance (or Gamma prior on precision), which satisfies the assumptions of limma.
+\item Single IG (Gamma) with outliers: two component inverse-gamma prior on variance (or Gamma prior on precision), where one component models the majority of genes and the other component, being more spread out, attempts to capture possible outliers. The method limmaR is specifically designed to deal with the case where large variance outliers exist.
+\item IG (Gamma) mixture: a more flexible inverse-Gamma mixture prior on variance (or mixture Gamma prior on precision) with multiple components.
+\item Long tail log-normal mixture: log-normal mixture prior on variance or precision, which yields a longer tail than either the inverse-Gamma or the Gamma distribution.
+\end{itemize}
+
+
+\begin{table}[!hbp]
+\begin{center}
+\caption{Parameters for the simulation scenarios with unimodal prior on variance}
+\label{tab:simparams1}
+\begin{tabular}{p{0.1\linewidth}p{0.35\linewidth}p{0.5\linewidth}} \hline
+Scenario & Description & Prior of $s_g^2$ \\ \hline
+A & Single IG & \IG(10,11)\\
+B & Single IG with outliers & 0.1\IG(3,4)+0.9\IG(10,11)\\
+C & IG mixture & 0.1\IG(3,4) + 0.4\IG(5,6) + 0.5\IG(20,21)\\
+D & Long tail log-normal mixture & 0.7\logN(0.0625,0.0625) + 0.3\logN(0.64,0.64)\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[!hbp]
+\begin{center}
+\caption{Parameters for the simulation scenarios  with unimodal prior on precision}
+\label{tab:simparams2}
+\begin{tabular}{p{0.1\linewidth}p{0.35\linewidth}p{0.5\linewidth}} \hline
+Scenario & Description & Prior of $1/s_g^2$ \\ \hline
+E & Single Gamma  & \Gam(10,9)\\
+F & Single Gamma with outliers & 0.1\Gam(2,1)+0.9\Gam(10,9)\\
+G & Gamma mixture & 0.1\Gam(2,1) + 0.4\Gam(5,4) + 0.5\Gam(30,29)\\
+H &Long tail log-normal mixture & 0.7\logN(0.0625,0.0625) + 0.3\logN(0.64,0.64)\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+For each simulation scenario we simulate 50 datasets and apply limma, limmaR, and our proposed method (vash) to estimate $s_g^2$ (or $1/s_g^2$).
+We compare the relative root mean squared errors (RRMSEs) of the shrinkage estimators, which we define by
+\[\RRMSE_{prec}:=\frac{\sqrt{\EE(1/s_g^2-1/\tilde{s}_g^2)^2}}{\sqrt{\EE(1/s_g^2-1/\hat{s}_g^2)^2}},\]
+\[\RRMSE_{var}:=\frac{\sqrt{\EE(s_g^2-\tilde{s}_g^2)^2}}{\sqrt{\EE(s_g^2-\hat{s}_g^2)^2}}.\]
+The RRMSE measures the improvement of a shrinkage estimator over simply using the sample variance $\hat{s}_g^2$ or precision $1/\hat{s}_g^2$,
+with RRMSE=1 indicating no benefit of shrinkage.
+
+%Ideally, root mean squared errors on the log scale would be preferable for variance/precision estimators. However, it is non-trivial to obtain theoretically optimal posterior estimators on the log scale, i.e. $\EE(\log(s_g^2)|\hat{s}^2)$ or $\EE(\log(1/s_g^2)|\hat{s}^2)$. The software limma also only outputs the posterior estimates for variances $\EE(s_g^2|\hat{s}^2)$, but does not compute the posterior estimates on the log-scale ($\EE(\log(s_g^2)|\hat{s}^2)$). Hence, we adopt the standard mean squared error of variances/precisions for comparison and evaluation of different methods.
+
+Figure \ref{fg:rrmse1} and \ref{fg:rrmse2} show the RRMSEs of limma, limmaR and vash for all scenarios.
+We summarize the main patterns as follows:
+\begin{enumerate}
+\item Across all scenarios, the mean RRMSE of vash is consistently no worse than either limma or limmaR, and is sometimes appreciably better.
+In contrast, limmaR sometimes performs better than limma and sometimes worse. In this sense vash is the most robust of the three methods.
+
+\item In simulations under the simplest scenario (A and E) where the assumptions of limma are met, all three methods perform similarly. In particular,
+the additional flexibility of vash does not come at a cost of a drop of performance in the simpler scenarios. 
+
+\item When sample sizes are small (df=3) all methods perform similarly under all scenarios. This highlights the fact that the benefits of more flexible methods
+like vash are small if samples sizes are too small to exploit the additional flexibility. Put another way, for small sample sizes simple assumptions suffice.
+
+\item When sample sizes are large (df=50) vash can outperform the other methods, particularly under the more complex scenarios (C,D; G,H), which most strongly violate the assumptions of limma. Indeed, in these cases both limma and limmaR can have RRMSE$>$1, indicating that they perform worse than the unshrunken sample estimators. 
+That is, when sample sizes available to estimate each variance are relatively large shrinkage estimates based on oversimplified assumptions
+can make estimation accuracy worse rather than better. (In contrast, for small sample sizes, the benefits of shrinkage greatly outweigh any cost of oversimplified assumptions.)
+\end{enumerate}
+ We also note that in scenario B where variances are sampled from a two component inverse-gamma mixture prior (one ``majority'' component and one ``outlier'' component), both vash and limmaR perform similarly on average (and slightly outperform limma), but results of vash are slightly more variable than limmaR. Possibly this reflects the fact that limmaR was specifically designed to deal with such cases.
+
+%In scenario F where precisions are sampled from a two component (one ``majority'' component and one ``outlier'' component) gamma mixture prior, vash outperforms both limma and limmaR, especially when the degree of freedom is large. When the degree of freedom is 50, limma and limmaR often yield higher mean squared errors than that of the sample variance estimator, which cautions against using limma in large sample cases.  
+
+%Another noticeable pattern is that limmaR performs worse than limma in such cases. Moreover, similar patterns are observed in the scenarios C and G where precisions or variances are sampled from mixture inverse-gamma / gamma priors with more components.
+
+%In the long tail mixture log-normal prior scenarios D and H, vash scores the best among the three methods when degree of freedom is 10 or 50, while limma and limmaR occasionally produce RRMSEs that are significantly higher than 1. Hence, both limma and limmaR are sensitive to the tail behaviors of prior distribution, while vash is comparatively more robust.
+
+\begin{figure}[!hbp]
+\includegraphics[width=\linewidth]{relmse_var.eps}
+\caption{$\RRMSE_{var}$ of three gene-specific variances estimators, limma, robust limma (limmaR) and our proposed estimator (vash) in the 4 simulation scenarios A-D with unimodal variance prior.}
+\label{fg:rrmse1}
+\end{figure}
+
+\begin{figure}[!hbp]
+\includegraphics[width=\linewidth]{relmse2_prec.eps}
+\caption{$RRMSE_{prec}$ of three gene-specific variances estimators, limma, robust limma (limmaR) and our proposed estimator (vash) in the 4 simulation scenarios E-H with unimodal precision prior.}
+\label{fg:rrmse2}
+\end{figure}
+
+%In summary, vash performs very similarly to limma and limmaR when the true $g$ is a single inverse gamma distribution, while its additional modeling flexibility can yield improved accuracy in other scenarios. 
+
+\begin{figure}[!hbp]
+\includegraphics[width=\linewidth]{tissuepairs.eps}
+\caption{The variance priors (the 2nd and 4th row) and precision priors (the 1st and 3rd row) fitted by mixture prior model (black line) or single component prior model (red line) for 6 tissue pair comparisons. The differences in the log-likelihood between the mixture prior model and the single component prior model for tissue pair comparisons ``Cervix-Ectocervix vs Testis'', ``Brain-Amygdala vs Brain-Cerebellum'', ``Brain-Anteriorcingulatecortex (BA24) vs Cervix-Endocervix", ``Brain-CerebellarHemisphere vs Stomach", ``Fallopian Tube vs Skin-Not Sun Exposed (Suprapubic)", ``Adrenal Gland vs Stomach" are given by 705, 166, 78, 78, 44, 44 respectively (from top-left to bottom-right).}
+\label{fg:tissuepairs}
+\end{figure}
+
+\begin{figure}[!hbp]
+\includegraphics[width=\linewidth]{rmse_gtex.eps}
+\caption{$\RRMSE_{prec}$ of three gene-specific variances estimators, limma, robust limma (limmaR) and our proposed estimator (vash) in simulation scenarios, which simulate the last four GTEx tissue pair comparisons (``Brain-Anteriorcingulatecortex (BA24) vs Cervix-Endocervix", ``Brain-CerebellarHemisphere vs Stomach", ``Fallopian Tube vs Skin-Not Sun Exposed (Suprapubic)" and ``Adrenal Gland vs Stomach") in Figure \ref{fg:tissuepairs}.}
+\label{fg:rmsegtex}
+\end{figure}
+
+\subsection{Assessment of variances in gene expression data}
+
+The results above demonstrate that the more flexible mixture prior implemented in vash, can in principle provide more accurate variance and precision estimates than
+the simple inverse gamma prior implemented in limma. However, in practice these gains will only be realized if the actual distribution of variances differs from the single inverse gamma model. Here
+we examine  this issue using RNA sequencing data from the Genotype-Tissue Expression (GTEx) project \citep{gtex}. The GTEx Project is an extensive resource which studies the relationship among genetic variation, gene expression, and other molecular phenotypes in multiple human tissues. Here we consider RNA-seq data (GTEx Version 6) on 53 human tissues from a total of 8555 samples (ranging from x to y samples per tissues).
+ %This sample size is sufficiently large to capture the variance (or precision) distribution with high accuracy. 
+ 
+ Since in practice variance estimation is usually performed as part of a differential expression analysis \citep{smyth2004limma}, we mimicked
+ this set-up here: specifically we considered performing a differential expression analysis between every pair of tissues, estimating the variances 
+  $\hat{s}$ in each case for the top 20,000 highly expressed genes. Since there are 53 tissues this resulted in 1378 datasets of variance estimates.
+
+First, for each data set, we quantified the improved fit of the mixture prior vs a single component prior by comparing the maximum log-likelihood under each prior.
+(For the mixture prior we fitted both the unimodal-variance and unimodal-precision priors, and took the one that provided the larger likelihood.) 
+In principle the mixture prior log-likelihood should always be larger because it includes the single component as a special case; we observed rare and minor deviations from this in practice due to numerical issues. Across all 903 datasets the average gain in log-likelihood of the mixture prior vs the single component prior was 34.1. The 25\% quantile, median, 75\% quantile, 90\% quantile and maximum of the difference are given by 2.9, 15.8, 42.9, 77.4 and 705.2 respectively. 
+A log-likelihood difference of 15.8 is already quite large: for comparison
+the maximum difference in log-likelihood for simulations under a single component model, Scenario A, df=50, was 1.9.
+We therefore conclude that the mixture component prior fits the data
+appreciably better for many datasets.
+
+To visualize the deviations from a single component prior present in these data, we examine the fitted priors in datasets where the log-likelihood differences are about 42.9 (75\% quantile), 77.4 (90\% quantile) and higher. Figure \ref{fg:tissuepairs} compares the fitted single component prior and mixture prior on several typical scenarios. Generally, the mixture priors use extra components to better fit the middle portion of distribution. The single component priors can match the tails pretty well, but often fails to accurately capture the peak.
+
+Overall, our impression from Figure \ref{fg:tissuepairs} is that differences between the fitted priors seem relatively minor, and might be expected to lead to relatively
+small differences in accuracy of shrinkage estimates, despite the large likelihood differences. To check this impression we simulated  data where the variances are generated from the fitted mixture priors for four of these datasets (the four datasets on the right hand side of Figure \ref{fg:tissuepairs}). Figure \ref{fg:rmsegtex} compares the RRMSEs of vash, limma and limmaR in these four scenarios. In general the results confirm our impression: the three methods perform very similarly in most scenarios, although vash shows
+some gain in accuracy in two scenarios with df=50.
+
+
+\section{Discussion}
+
+We have presented a flexible empirical Bayes approach (``variance adaptive shrinkage", or ``vash") 
+to shrinkage estimation of variances. The method makes use of a mixture model to 
+allow for a flexible family of unimodal prior distributions for either the variances or precisions, and uses an accelerated EM-based algorithm to efficiently 
+estimate the underlying prior by maximum likelihood. Although slower than limma, vash is computationally tractable for large datasets: for example, for data with 10,000 genes, vash typically takes about 30 seconds (limma takes just a few seconds).
+
+Our results demonstrate that vash provides a robust and effective approach to variance shrinkage, at least in settings where the distribution of the variances
+(or precisions) is unimodal. When the true variances come from a single inverse-gamma prior, vash is no less accurate than the simpler method. When the 
+variances come from a more complex distribution vash can be more accurate than simpler methods if the sample sizes to estimate each variance are sufficiently large.
+
+In the gene expression datasets we examined here, the gains in accuracy of vash vs limma are small, and likely not practically important. While this could
+be viewed as disappointing, it nonetheless seems useful to show this, since it suggests that in many gene expression contexts the simpler approaches will suffice.
+At the same time, it remains possible that our method could provide practically useful gains in accuracy for other data-sets, and as we have shown, it comes at little cost.
+In addition, our work provides an example of a general approach to empirical Bayes shrinkage -- use of mixture components with a common mode to model
+unimodal prior distributions -- that could be useful more generally.
+
+Our method is implemented in an R package \texttt{vashr} available from \href{http://github.com/mengyin/vashr}{http://github.com/mengyin/vashr}.
+
+\section*{Acknowledgements}
+We thank the the NIH GTEx project for providing RNA-seq datasets. 
+
+\section*{Funding}
+This work was supported by NIH grant HG02585 and 
+by a grant from the Gordon and Betty Moore Foundation (Grant GBMF \#4559).
+
+\noindent \emph{Conflict of Interest:} none declared.
+
+\bibliographystyle{natbib}
+\bibliographystyle{achemnat}
+\bibliographystyle{plainnat}
+\bibliographystyle{abbrv}
+\bibliographystyle{bioinformatics}
+\bibliographystyle{plain}
+\bibliography{Document} 
+\nocite{*}
+
+\section*{Appendix}
+Details of the algorithm used to estimate hyper-parameters $c$ and $\piv$: 
+
+To maximize the likelihood (\ref{eqn:lik})
+we iteratively update $c$ and $\piv$ using the following steps until they converge:
+\begin{align}
+c^{new}&=\arg\max_{c} \log L(c,a_1^{old},...a_K^{old},\pi_1^{old},...,\pi_K^{old}) \label{eqn:optc} \\
+(\pi_1^{new},...,\pi_K^{new})&=\left(\frac{\sum_g \tilde{\pi}_{g1}^{old}}{\sum_{g'}\sum_{k'} \tilde{\pi}_{g'k'}^{old}},...,\frac{\sum_g \tilde{\pi}_{gK}^{old}}{\sum_{g'}\sum_{k'} \tilde{\pi}_{g'k'}^{old}}\right). \label{eqn:optpi}
+\end{align}
+
+Because there is no analytic solution to the optimization problem (\ref{eqn:optc}) we approximate the optimum via the quasi-Newton method
+using the function {\tt optim} in R. The updating procedure (\ref{eqn:optc})-(\ref{eqn:optpi}) is a fixed point mapping function, hence we can accelerate the overall optimization procedure by the R package SQUAREM \citep{varadhan2010squarem}, which is computationally efficient in solving fixed point problems. 
+
+
+\end{document}
