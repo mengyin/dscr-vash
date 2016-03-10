@@ -1,9 +1,9 @@
 # Variance adaptive shrinkage (vash)
-# Using R package "vash"
+# Using R package "vashr"
 # input: betahat - estimate of effect size
 #        sebetahat - estimated sd of betahat
 
-library(vash)
+library(vashr)
 library(limma)
 vash.wrapper = function(input,args){
    
