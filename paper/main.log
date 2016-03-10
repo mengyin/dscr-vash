@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  10 MAR 2016 15:47
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  10 MAR 2016 16:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -613,9 +613,6 @@ Package pdftex.def Info: rmse_gtex-eps-converted-to.pdf used on input line 336.
 
 (pdftex.def)             Requested size: 234.0pt x 175.49438pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 Overfull \hbox (252.0pt too wide) has occurred while \output is active
 [][] 
  []
@@ -706,7 +703,7 @@ w/helvetic/uhvro8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/helv
 etic/uhvro8ac.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utm
 b8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></
 usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (6 pages, 442449 bytes).
+Output written on main.pdf (6 pages, 442527 bytes).
 PDF statistics:
  170 PDF objects out of 1000 (max. 8388607)
  119 compressed objects within 2 object streams

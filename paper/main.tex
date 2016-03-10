@@ -342,7 +342,7 @@ can make estimation accuracy worse rather than better. (In contrast, for small s
 
 The results above demonstrate that the more flexible mixture prior implemented in vash, can in principle provide more accurate variance and precision estimates than
 the simple inverse gamma prior implemented in limma. However, in practice these gains will only be realized if the actual distribution of variances differs from the single inverse gamma model. Here
-we examine  this issue using RNA sequencing data from the Genotype-Tissue Expression (GTEx) project \citep{gtex}. The GTEx Project is an extensive resource which studies the relationship among genetic variation, gene expression, and other molecular phenotypes in multiple human tissues. Here we consider RNA-seq data (GTEx Version 6) on 53 human tissues from a total of 8555 samples (ranging from x to y samples per tissues).
+we examine this issue using RNA sequencing data from the Genotype-Tissue Expression (GTEx) project \citep{gtex}. The GTEx Project is an extensive resource which studies the relationship among genetic variation, gene expression, and other molecular phenotypes in multiple human tissues. Here we consider RNA-seq data (GTEx V6 dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015, \href{http://www.gtexportal.org/home/}{http://www.gtexportal.org/home/}) on 53 human tissues from a total of 8555 samples (ranging from 6 to 430 samples per tissues).
  %This sample size is sufficiently large to capture the variance (or precision) distribution with high accuracy. 
  
  Since in practice variance estimation is usually performed as part of a differential expression analysis \citep{smyth2004limma}, we mimicked

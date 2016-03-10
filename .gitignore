@@ -5,3 +5,5 @@ code/dsc-gtex-vash/dsc-gtex-files/
 *.Rdata
 *~
 *.html
+paper/*.log
+paper/*.synctex.gz

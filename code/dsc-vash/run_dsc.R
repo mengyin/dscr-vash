@@ -27,8 +27,8 @@ limma2beta_est =function(output){
 addOutputParser(dsc_vash,"limma2beta",limma2beta_est,"limma_output","est_output")
 
 vash2beta_est =function(output){
-  return (list(s2.est = output$s2.est,
-               qvalue=output$qvalue,
+  return (list(s2.est = output$sd.post^2,
+               qvalue = output$qvalue,
                loglike = output$fit$loglik))
 } 
 addOutputParser(dsc_vash,"vash2beta",vash2beta_est,"vash_output","est_output")
