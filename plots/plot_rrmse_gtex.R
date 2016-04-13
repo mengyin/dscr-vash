@@ -3,7 +3,7 @@
 # RRMSEs of scenarios simulated from GTEx tissue comparisons
 #############################################################
 # rearrage the results data frame and compute RRMSEs
-load("../code/dsc-vash/res_appli.Rdata")
+load("../code/dsc-vash/res.Rdata")
 
 library(dplyr)
 newres=res
@@ -48,96 +48,143 @@ Gammaprior=function(alpha,c,pi,unimodal,xmax){
 # plot Figure 4
 setEPS()
 postscript("../paper/rmse_gtex.eps",width=10,height=7.5)
-par(mfcol=c(3,4))
+par(mfcol = c(3, 4),     
+    oma = c(0, 2, 0, 0), # two rows of text at the outer left and bottom margin
+    mar = c(2, 2, 6, 1), # space for one row of text at ticks and to separate plots
+    mgp = c(2, 1, 0))
 
 idx1 = (res[,3]=="gtex90.prec,df=3" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex90.prec,df=3" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex90.prec,df=3" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0,.15),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('Brain-Anteriorcingulatecortex(BA24) vs.\n Cervix-Endocervix,\n df=3',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('Brain-Anteriorcingu-\n latecortex vs. \n Cervix-Endocervix,\n df=3',cex.main=1.6)
 #abline(h=1,lty=2,col=2)
 
 idx1 = (res[,3]=="gtex90.prec,df=10" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex90.prec,df=10" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex90.prec,df=10" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0.4,0.7),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('df=10',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('df=10',cex.main=1.6)
 #abline(h=1,lty=2,col=2)
 
 idx1 = (res[,3]=="gtex90.prec,df=50" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex90.prec,df=50" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex90.prec,df=50" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0.8,1),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('df=50',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('df=50',cex.main=1.6)
 
 idx1 = (res[,3]=="gtex90.var,df=3" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex90.var,df=3" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex90.var,df=3" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0,.15),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('Brain-Cerebellar Hemisphere vs.\n Stomach,\n df=3',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('Brain-Cerebellar-\n Hemisphere vs. Stomach,\n df=3',cex.main=1.6)
 #abline(h=1,lty=2,col=2)
 
 idx1 = (res[,3]=="gtex90.var,df=10" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex90.var,df=10" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex90.var,df=10" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0.4,0.7),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('df=10',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('df=10',cex.main=1.6)
 #abline(h=1,lty=2,col=2)
 
 idx1 = (res[,3]=="gtex90.var,df=50" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex90.var,df=50" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex90.var,df=50" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0.8,1),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('df=50',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('df=50',cex.main=1.6)
 
 idx1 = (res[,3]=="gtex75.prec,df=3" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex75.prec,df=3" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex75.prec,df=3" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0,.15),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('Fallopian Tube vs.\n Skin-Not Sun Exposed (Suprapubic),\n df=3',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('Fallopian Tube vs.\n Skin-NotSunExposed,\n df=3',cex.main=1.6)
 
 idx1 = (res[,3]=="gtex75.prec,df=10" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex75.prec,df=10" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex75.prec,df=10" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0.4,0.7),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('df=10',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('df=10',cex.main=1.6)
 
 idx1 = (res[,3]=="gtex75.prec,df=50" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex75.prec,df=50" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex75.prec,df=50" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0.8,1),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('df=50',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('df=50',cex.main=1.6)
 
 idx1 = (res[,3]=="gtex75.var,df=3" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex75.var,df=3" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex75.var,df=3" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0,.15),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('Adrenal Gland\n vs. Stomach, \n df=3',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('Adrenal Gland\n vs. Stomach, \n df=3',cex.main=1.6)
 #abline(h=1,lty=2,col=2)
 
 idx1 = (res[,3]=="gtex75.var,df=10" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex75.var,df=10" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex75.var,df=10" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0.4,0.7),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('df=10',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('df=10',cex.main=1.6)
 #abline(h=1,lty=2,col=2)
 
 idx1 = (res[,3]=="gtex75.var,df=50" & res[,4]=="vash.opt")
 idx2 = (res[,3]=="gtex75.var,df=50" & res[,4]=="limma")
 idx3 = (res[,3]=="gtex75.var,df=50" & res[,4]=="limmaR")
 boxplot(test$RMSE.prec_rel[idx1], test$RMSE.prec_rel[idx2], test$RMSE.prec_rel[idx3],ylim=c(0.8,1),
-        names=c("vash", "limma", "limmaR"), col="grey", colMed="black")
-title('df=50',ylab='Precision RRMSE')
+        names=c("vash", "limma", "limmaR"), col="grey", colMed="black",cex.axis=1.45,xaxt="n")
+axis(1,at=1:3,labels=FALSE)
+text(x=1:3, y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+     labels=c("vash", "limma", "limmaR"), cex=1.75, xpd=TRUE)
+title('df=50',cex.main=1.6)
+
+mtext('RRMSE', side=2, outer=TRUE,adj=0.5,cex=1.1,line=0.5,
+      at= grconvertY(2.5, from='nfc', to='ndc'))
+mtext('RRMSE', side=2, outer=TRUE,adj=0.5,cex=1.1,line=0.5,
+      at= grconvertY(1.5, from='nfc', to='ndc'))
+mtext('RRMSE', side=2, outer=TRUE,adj=0.5,cex=1.1,line=0.5,
+      at= grconvertY(0.5, from='nfc', to='ndc'))
 dev.off()
+
 

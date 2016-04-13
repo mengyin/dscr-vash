@@ -140,15 +140,15 @@ where the parameters $\theta$ are to be estimated from the data. Equivalently, t
 
 
 \subsection{A unimodal distribution for the variances}
-Let $\IG(\cdot;a,b)$ denote the density of an Inverse-Gamma distribution with shape $a$ and rate $b$. This distribution is unimodal with mode
+Let $\IG(\cdot;a,b)$ denote the density of an inverse-gamma distribution with shape $a$ and rate $b$. This distribution is unimodal with mode
 at $c=b/(a+1)$. To obtain a more flexible family of unimodal distributions with mode at $c$ we consider a mixture of
-Inverse-Gamma distributions, each with mode at $c$:
+inverse-gamma distributions, each with mode at $c$:
 \begin{equation}
 g(\cdot ; \piv,\av,  c) = \sum\limits_{k=1}^K \pi_{k} \IG(\cdot;a_k,b_k), \label{eqn:h}
 \end{equation}
 where
 \begin{equation}
-b_k:=(a_k+1)*c. \label{eqn:b1}
+b_k:=(a_k+1)c. \label{eqn:b1}
 \end{equation}
 Each component in (\ref{eqn:h}) has mode at $c$, and the variance about this mode is controlled by $a_k$, with large $a_k$
 corresponding to small variance. By setting $\av$ to a fixed grid of values that range from ``small" to ``large", we obtain a flexible
@@ -175,7 +175,7 @@ we use maximum likelihood instead of moment matching.
 
 For $K>1$, as noted above, we use $K$ ``large" (e.g. 10-16), fix the values of $a_k$ to a grid of values from ``small" to ``large", and estimate the hyper-parameters $c,\piv$ by maximizing the likelihood
 \begin{align}
-L(\av, c; \hat{s}_1^2,..., \hat{s}_G^2) &=P(\hat{s}_1,...,\hat{s}_G| \av, c) \\ 
+L(\piv, c;\av, \hat{s}_1^2,..., \hat{s}_G^2) &=P(\hat{s}_1,...,\hat{s}_G| \piv,\av, c) \\ 
 &=\prod\limits_{g=1}^G \sum_k \pi_k p(\hat{s}_g; a_k,c) \label{eqn:lik}
 \end{align}
 where $p(\hat{s}_g; a_k,c)$ is given by (\ref{eqn:ps}).
@@ -186,7 +186,7 @@ Given $c$, we update $\pi$ using a simple EM step \citep{dempster1977em}. Given 
 convergence of the overall procedure. See Appendix for details.
 
 \subsection{Posterior calculations}
-Using (\ref{eqn:h}) as a prior distribution for $s_g^2$, and combining with the likelihood (\ref{eqn:selik}) the posterior distribution of $s_g^2$ is also a mixture of inverse Gamma distributions:
+Using (\ref{eqn:h}) as a prior distribution for $s_g^2$, and combining with the likelihood (\ref{eqn:selik}) the posterior distribution of $s_g^2$ is also a mixture of inverse-gamma distributions:
 \begin{align}
 P(s_g^2|\hat{s}_g^2) %&= \frac{P(\hat{s}_g^2|s_g^2)P(s_g^2|c,\av,\piv)}{\int P(\hat{s}_g^2|s_g^2)P(s_g^2|c,\av,\piv)ds_g}\\
 & =\sum_k \tilde{\pi}_{gk} \IG(s_g^2; \tilde{a}_{gk}, \tilde{b}_{gk}),
@@ -215,11 +215,11 @@ the absence of closed-form expressions makes this less convenient.
 \subsection{Unimodal prior assumption on variance or precision}
 
 The above formulation is based on assuming a unimodal prior distribution for the variance $s_g^2$,
-and specifically by using a mixture of inverse gamma distributions all with the same mode.
+and specifically by using a mixture of inverse-gamma distributions all with the same mode.
 An alternative is to assume a unimodal prior distribution for the precision $1/s_g^2$,
-by using a mixture of Gamma distributions, all with the same mode. 
+by using a mixture of gamma distributions, all with the same mode. 
 This is equivalent to using a mixture
-of inverse gamma distributions for the variance $s_g^2$ as in (\ref{eqn:h}) above, but with
+of inverse-gamma distributions for the variance $s_g^2$ as in (\ref{eqn:h}) above, but with
 \begin{equation}
 b_k:= (a_k-1)/c \label{eqn:b2}
 \end{equation}
@@ -244,10 +244,10 @@ under various scenarios for the actual distribution of variances (scenarios A-D)
 The simulation scenarios are designed to span the range from a single inverse-gamma prior as assumed by limma, to more complex distributions under
 which we might expect our method to outperform limma. Specifically we consider:
 \begin{itemize}
-\item Single IG (Gamma): single component inverse-Gamma prior on variance (or Gamma prior on precision), which satisfies the assumptions of limma.
-\item Single IG (Gamma) with outliers: two component inverse-gamma prior on variance (or Gamma prior on precision), where one component models the majority of genes and the other component, being more spread out, attempts to capture possible outliers. The method limmaR is specifically designed to deal with the case where large variance outliers exist.
-\item IG (Gamma) mixture: a more flexible inverse-Gamma mixture prior on variance (or mixture Gamma prior on precision) with multiple components.
-\item Long tail log-normal mixture: log-normal mixture prior on variance or precision, which yields a longer tail than either the inverse-Gamma or the Gamma distribution.
+\item Single IG (Gamma): single component inverse-gamma prior on variance (or gamma prior on precision), which satisfies the assumptions of limma.
+\item Single IG (Gamma) with outliers: two component inverse-gamma prior on variance (or gamma prior on precision), where one component models the majority of genes and the other component, being more spread out, attempts to capture possible outliers. The method limmaR is specifically designed to deal with the case where large variance outliers exist.
+\item IG (Gamma) mixture: a more flexible inverse-gamma mixture prior on variance (or mixture gamma prior on precision) with multiple components.
+\item Long tail log-normal mixture: log-normal mixture prior on variance or precision, which yields a longer tail than either the inverse-gamma or the gamma distribution.
 \end{itemize}
 
 
@@ -271,8 +271,8 @@ D & Long tail log-normal mixture & 0.7\logN(0.0625,0.0625) + 0.3\logN(0.64,0.64)
 \label{tab:simparams2}
 \begin{tabular}{p{0.1\linewidth}p{0.35\linewidth}p{0.5\linewidth}} \hline
 Scenario & Description & Prior of $1/s_g^2$ \\ \hline
-E & Single Gamma  & \Gam(10,9)\\
-F & Single Gamma with outliers & 0.1\Gam(2,1)+0.9\Gam(10,9)\\
+E & Single gamma  & \Gam(10,9)\\
+F & Single gamma with outliers & 0.1\Gam(2,1)+0.9\Gam(10,9)\\
 G & Gamma mixture & 0.1\Gam(2,1) + 0.4\Gam(5,4) + 0.5\Gam(30,29)\\
 H &Long tail log-normal mixture & 0.7\logN(0.0625,0.0625) + 0.3\logN(0.64,0.64)\\ \hline
 \end{tabular}
@@ -320,11 +320,11 @@ can make estimation accuracy worse rather than better. (In contrast, for small s
 
 \begin{figure}[!hbp]
 \includegraphics[width=\linewidth]{relmse2_prec.eps}
-\caption{$RRMSE_{prec}$ of three gene-specific variances estimators, limma, robust limma (limmaR) and our proposed estimator (vash) in the 4 simulation scenarios E-H with unimodal precision prior.}
+\caption{$\RRMSE_{prec}$ of three gene-specific variances estimators, limma, robust limma (limmaR) and our proposed estimator (vash) in the 4 simulation scenarios E-H with unimodal precision prior.}
 \label{fg:rrmse2}
 \end{figure}
 
-%In summary, vash performs very similarly to limma and limmaR when the true $g$ is a single inverse gamma distribution, while its additional modeling flexibility can yield improved accuracy in other scenarios. 
+%In summary, vash performs very similarly to limma and limmaR when the true $g$ is a single inverse-gamma distribution, while its additional modeling flexibility can yield improved accuracy in other scenarios. 
 
 \begin{figure}[!hbp]
 \includegraphics[width=\linewidth]{tissuepairs.eps}
@@ -341,7 +341,7 @@ can make estimation accuracy worse rather than better. (In contrast, for small s
 \subsection{Assessment of variances in gene expression data}
 
 The results above demonstrate that the more flexible mixture prior implemented in vash, can in principle provide more accurate variance and precision estimates than
-the simple inverse gamma prior implemented in limma. However, in practice these gains will only be realized if the actual distribution of variances differs from the single inverse gamma model. Here
+the simple inverse-gamma prior implemented in limma. However, in practice these gains will only be realized if the actual distribution of variances differs from the single inverse-gamma model. Here
 we examine this issue using RNA sequencing data from the Genotype-Tissue Expression (GTEx) project \citep{gtex}. The GTEx Project is an extensive resource which studies the relationship among genetic variation, gene expression, and other molecular phenotypes in multiple human tissues. Here we consider RNA-seq data (GTEx V6 dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015, \href{http://www.gtexportal.org/home/}{http://www.gtexportal.org/home/}) on 53 human tissues from a total of 8555 samples (ranging from 6 to 430 samples per tissues).
  %This sample size is sufficiently large to capture the variance (or precision) distribution with high accuracy. 
  
@@ -381,7 +381,7 @@ At the same time, it remains possible that our method could provide practically 
 In addition, our work provides an example of a general approach to empirical Bayes shrinkage -- use of mixture components with a common mode to model
 unimodal prior distributions -- that could be useful more generally.
 
-Our method is implemented in an R package \texttt{vashr} available from \href{http://github.com/mengyin/vashr}{http://github.com/mengyin/vashr}. Code for reproducing analyses and figures in this paper are at \href{https://github.com/mengyin/vash}{https://github.com/mengyin/vash}.
+Our method is implemented in an R package \texttt{vashr} available from \href{http://github.com/mengyin/vashr}{http://github.com/mengyin/vashr}. Codes for reproducing analyses and figures in this paper are at \href{https://github.com/mengyin/vash}{https://github.com/mengyin/vash}.
 
 \section*{Acknowledgements}
 We thank the the NIH GTEx project for providing RNA-seq datasets. 

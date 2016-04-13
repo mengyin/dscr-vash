@@ -57,9 +57,9 @@ Gammaprior2 = function(alpha,beta,pi,xmax){
 
 # plot the fitted priors of a tissue pair comparison
 plotpriors = function(tissue1, tissue2){
-  out.prec = readRDS(paste0("/Volumes/PERSONAL/MS/dscr-gtex-vash/dsc-gtex-files/output/",tissue1,",",tissue2,"/voom+vash.prec/vash_output/output.1.rds"))
-  out.var = readRDS(paste0("/Volumes/PERSONAL/MS/dscr-gtex-vash/dsc-gtex-files/output/",tissue1,",",tissue2,"/voom+vash.var/vash_output/output.1.rds"))
-  out.sing = readRDS(paste0("/Volumes/PERSONAL/MS/dscr-gtex-vash/dsc-gtex-files/output/",tissue1,",",tissue2,"/voom+vash.sing/vash_output/output.1.rds"))
+  out.prec = readRDS(paste0("../code/dsc-gtex-vash/dsc-gtex-files/output/",tissue1,",",tissue2,"/voom+vash.prec/vash_output/output.1.rds"))
+  out.var = readRDS(paste0("../code/dsc-gtex-vash/dsc-gtex-files/output/",tissue1,",",tissue2,"/voom+vash.var/vash_output/output.1.rds"))
+  out.sing = readRDS(paste0("../code/dsc-gtex-vash/dsc-gtex-files/output/",tissue1,",",tissue2,"/voom+vash.sing/vash_output/output.1.rds"))
   
   if (out.prec$fit$loglik <= out.var$fit$loglik){
     out.mix = out.var
@@ -70,22 +70,27 @@ plotpriors = function(tissue1, tissue2){
   temp.sing = Gammaprior2(out.sing$fitted.g$alpha,out.sing$fitted.g$beta,out.sing$fitted.g$pi,xmax=5)
   
   plot(temp.mix$xgrid, temp.mix$EBprior.prec, type='l',
-       main=paste(tissue1,"vs\n",tissue2),xlab='x',ylab='Precision prior',
+       main=paste(tissue1,"\n vs. \n",tissue2),xlab='x',
+       cex.axis=1.3, cex.main=1.1,
        ylim=c(0,max(c(temp.mix$EBprior.prec,temp.sing$EBprior.prec))))
   lines(temp.sing$xgrid, temp.sing$EBprior.prec, col=2)
-  legend("topright",col=c(1,2),lty=c(1,1),legend=c("Mixture","Single"))
+  legend("topright",col=c(1,2),lty=c(1,1),legend=c("Mixture","Single"),cex=1.2)
   
   plot(temp.mix$xgrid, temp.mix$EBprior.var, type='l',
-       main=paste(tissue1,"vs\n",tissue2), xlab='x',ylab='Variance prior',
+       main=paste(tissue1,"\n vs. \n",tissue2), xlab='x',
+       cex.axis=1.3, cex.main=1.1,
        ylim=c(0,max(c(temp.mix$EBprior.var,temp.sing$EBprior.var))))
   lines(temp.sing$xgrid, temp.sing$EBprior.var, col=2)
-  legend("topright",col=c(1,2),lty=c(1,1),legend=c("Mixture","Single"))
+  legend("topright",col=c(1,2),lty=c(1,1),legend=c("Mixture","Single"),cex=1.2)
 }
 
 # plot Figure 3
 setEPS()
 postscript("../paper/tissuepairs.eps",width=7.5,height=10)
-par(mfcol=c(4,3))
+par(mfcol=c(4,3),
+    oma = c(0, 2, 0, 0), # two rows of text at the outer left and bottom margin
+    mar = c(2, 2, 6, 1), # space for one row of text at ticks and to separate plots
+    mgp = c(2, 1, 0))
 # Max log-likelihood difference (unimodal precision prior): Cervix-Ectocervix,Testis
 plotpriors("Cervix-Ectocervix","Testis")
 # Max log-likelihood difference (unimodal variance prior): Brain-Amygdala,Brain-Cerebellum
@@ -98,4 +103,13 @@ plotpriors("Brain-CerebellarHemisphere","Stomach")
 plotpriors("FallopianTube","Skin-NotSunExposed(Suprapubic)")
 # 75% log-likelihood difference (unimodal variance prior): AdrenalGland,Stomach
 plotpriors("AdrenalGland","Stomach")
+
+mtext('precision prior density', side=2, outer=TRUE,adj=0.5, cex=0.9, line=0.5,
+      at= grconvertY(3.4, from='nfc', to='ndc'))
+mtext('variance prior density', side=2, outer=TRUE,adj=0.5,cex=0.9,line=0.5,
+      at= grconvertY(2.4, from='nfc', to='ndc'))
+mtext('precision prior density', side=2, outer=TRUE,adj=0.5,cex=0.9,line=0.5,
+      at= grconvertY(1.4, from='nfc', to='ndc'))
+mtext('variance prior density', side=2, outer=TRUE,adj=0.5,cex=0.9,line=0.5,
+      at= grconvertY(0.4, from='nfc', to='ndc'))
 dev.off()
