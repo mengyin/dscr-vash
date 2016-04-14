@@ -7,3 +7,4 @@ code/dsc-gtex-vash/dsc-gtex-files/
 *.html
 paper/*.log
 paper/*.synctex.gz
+paper-biorxiv/
