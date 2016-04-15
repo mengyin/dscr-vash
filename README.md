@@ -1,5 +1,5 @@
 ## Introduction
-This repo is intended to contain code to reproduce results from the paper "Variance Adaptive Shrinkage (vash): Flexible Empirical Bayes estimation of variances".
+This repo is intended to contain code to reproduce results from the paper ["Variance Adaptive Shrinkage (vash): Flexible Empirical Bayes estimation of variances"](http://biorxiv.org/content/early/2016/04/13/048660).
 
 ## Directory Structure
 Here's a brief summary of the directory structure.
@@ -12,18 +12,14 @@ paper: the paper
 
 ## Reproduce Results
 1. Clone (or download and unzip) this repository.
-
 2. Install the `R` packages you need. To install the vashr package first you need to install devtools
 ```
 install.packages("devtools")
 library(devtools)
 install_github("mengyin/vashr")
 ```
-
 3. Prepare the GTEx datasets: register and log into [GTEx portal](http://www.gtexportal.org/home/datasets). Download `GTEx_Data_V6_Annotations_SampleAttributesDS.txt`, `GTEx_Analysis_v6_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz` to the `data` subdirectory and decompress the latter file. Type `make all` in the `data` subdirectory. 
-
 4. Within the repository directory type `make clean`. This will remove figure etc files that I have already included in the repository.
-
 5. Within the repository directory type `make`. This will try to:
 
       i) Run all the code for the simulation studies.
