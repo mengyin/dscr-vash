@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  12 APR 2016 17:19
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  14 APR 2016 21:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -492,20 +492,15 @@ Overfull \hbox (252.0pt too wide) has occurred while \output is active
 
 [3]
 Package epstopdf Info: Source file: <relmse_var.eps>
-(epstopdf)                    date: 2016-04-12 17:19:14
-(epstopdf)                    size: 61052 bytes
+(epstopdf)                    date: 2016-04-13 14:56:34
+(epstopdf)                    size: 62067 bytes
 (epstopdf)             Output file: <relmse_var-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-04-12 17:18:30
-(epstopdf)                    size: 29985 bytes
+(epstopdf)                    date: 2016-04-14 20:42:24
+(epstopdf)                    size: 30824 bytes
 (epstopdf)             Command: <repstopdf --outfile=relmse_var-eps-converted-t
 o.pdf relmse_var.eps>
 (epstopdf)             \includegraphics on input line 316.
-runsystem(repstopdf --outfile=relmse_var-eps-converted-to.pdf relmse_var.eps)..
-.executed safely (allowed).
-
-Package epstopdf Info: Result file: <relmse_var-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-04-12 17:19:32
-(epstopdf)                    size: 29985 bytes.
+Package epstopdf Info: Output file is already uptodate.
  <relmse_var-eps-converted-to.pdf, id=39, 722.7pt x 722.7pt>
 File: relmse_var-eps-converted-to.pdf Graphic file (type pdf)
 
@@ -554,20 +549,15 @@ LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <3.25> not available
 (Font)              size <5> substituted on input line 317.
 
 Package epstopdf Info: Source file: <relmse2_prec.eps>
-(epstopdf)                    date: 2016-04-12 17:19:14
-(epstopdf)                    size: 59279 bytes
+(epstopdf)                    date: 2016-04-13 14:56:34
+(epstopdf)                    size: 59226 bytes
 (epstopdf)             Output file: <relmse2_prec-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-04-12 17:18:32
-(epstopdf)                    size: 28380 bytes
+(epstopdf)                    date: 2016-04-14 20:42:26
+(epstopdf)                    size: 28335 bytes
 (epstopdf)             Command: <repstopdf --outfile=relmse2_prec-eps-converted
 -to.pdf relmse2_prec.eps>
 (epstopdf)             \includegraphics on input line 322.
-runsystem(repstopdf --outfile=relmse2_prec-eps-converted-to.pdf relmse2_prec.ep
-s)...executed safely (allowed).
-
-Package epstopdf Info: Result file: <relmse2_prec-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-04-12 17:19:34
-(epstopdf)                    size: 28371 bytes.
+Package epstopdf Info: Output file is already uptodate.
 <relmse2_prec-eps-converted-to.pdf, id=40, 722.7pt x 722.7pt>
 File: relmse2_prec-eps-converted-to.pdf Graphic file (type pdf)
 
@@ -576,10 +566,10 @@ Package pdftex.def Info: relmse2_prec-eps-converted-to.pdf used on input line 3
 22.
 (pdftex.def)             Requested size: 234.0pt x 233.99251pt.
 Package epstopdf Info: Source file: <tissuepairs.eps>
-(epstopdf)                    date: 2016-04-12 16:34:54
+(epstopdf)                    date: 2016-04-13 14:56:36
 (epstopdf)                    size: 332456 bytes
 (epstopdf)             Output file: <tissuepairs-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-04-12 16:35:02
+(epstopdf)                    date: 2016-04-14 20:42:28
 (epstopdf)                    size: 137833 bytes
 (epstopdf)             Command: <repstopdf --outfile=tissuepairs-eps-converted-
 to.pdf tissuepairs.eps>
@@ -600,11 +590,11 @@ nteriorcingulatecortex
  []
 
 Package epstopdf Info: Source file: <rmse_gtex.eps>
-(epstopdf)                    date: 2016-04-12 17:12:24
+(epstopdf)                    date: 2016-04-13 14:56:34
 (epstopdf)                    size: 29976 bytes
 (epstopdf)             Output file: <rmse_gtex-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-04-12 17:12:34
-(epstopdf)                    size: 17788 bytes
+(epstopdf)                    date: 2016-04-14 20:42:30
+(epstopdf)                    size: 17791 bytes
 (epstopdf)             Command: <repstopdf --outfile=rmse_gtex-eps-converted-to
 .pdf rmse_gtex.eps>
 (epstopdf)             \includegraphics on input line 336.
@@ -707,7 +697,7 @@ w/helvetic/uhvro8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/helv
 etic/uhvro8ac.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utm
 b8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></
 usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (6 pages, 440564 bytes).
+Output written on main.pdf (6 pages, 441362 bytes).
 PDF statistics:
  170 PDF objects out of 1000 (max. 8388607)
  119 compressed objects within 2 object streams

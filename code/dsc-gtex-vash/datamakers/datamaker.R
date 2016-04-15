@@ -7,14 +7,14 @@ datamaker = function(args){
   tissue = args$tissue
   
   # rawdata1 = readtissue(args$path, tissue[1])
-  rawdata1 = read.table(paste0(path,"/gtex/tissues/",args$tissue[1],".txt"),header=TRUE)
+  rawdata1 = read.table(paste0(path,"/",args$tissue[1],".txt"),header=TRUE)
   
   Nsamp = args$Nsamp # Number of samples in each of the 2 groups
   
   
   if (length(tissue)>1){
     # rawdata2 = readtissue(args$path, tissue[2])
-    rawdata2 = read.table(paste0(path,"/gtex/tissues/",args$tissue[2],".txt"),header=TRUE)
+    rawdata2 = read.table(paste0(path,"/",args$tissue[2],".txt"),header=TRUE)
     
     if (is.null(args$Nsamp)){
       Nsamp = min(dim(rawdata1)[2],dim(rawdata2)[2])
@@ -170,13 +170,13 @@ selectsample = function(counts, Nsamp, breaksample){
 
 # Read dataset for a specific tissue
 readtissue = function(path, tissue){
-  tis = read.table(paste0(path,"/gtex/sample_tissue.txt"), header=TRUE)
+  tis = read.table(paste0(path,"sample_tissue.txt"), header=TRUE)
   
   tissue.idx = grep(tissue,tis[,2],fixed=TRUE)
   cols = rep("NULL",dim(tis)[1])
   cols[tissue.idx]="numeric"
   
-  data = read.table(paste0(path,"/gtex/GTEx_Analysis_v6_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct_new.txt"),
+  data = read.table(paste0(path,"GTEx_Analysis_v6_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct_new.txt"),
                     colClasses = cols, header = TRUE)
   return(data)
 }
